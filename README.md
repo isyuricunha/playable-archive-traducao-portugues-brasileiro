@@ -15,7 +15,7 @@
 
 <!-- release-state: unavailable -->
 
-> **Tradução concluída e testada em jogo por Yuri**, incluindo textos e glifos.
+> **Tradução concluída e testada em jogo**, incluindo textos e glifos.
 > São 476 entradas em dez tabelas. O ZIP é gerado automaticamente pelo
 > GitHub Actions; a disponibilidade pública acompanha a página de Releases.
 
@@ -30,7 +30,7 @@ a clareza das instruções.
 A base é o inglês original. A proposta inclui legendas e textos de leitura,
 sem substituir as vozes. O escopo conhecido reúne **476 entradas em dez tabelas**,
 com cerca de **5.400 palavras em inglês**. A tradução e os glifos foram
-validados por Yuri durante o teste no jogo.
+validados durante o teste no jogo.
 
 ## 📼 Um arquivo que não deveria ser aberto
 
@@ -79,7 +79,7 @@ Uma validação técnica também não substitui a revisão visual dentro do jogo
 
 ## 🛠️ Como instalar quando o pacote estiver disponível
 
-O pacote completo foi testado em jogo por Yuri, incluindo os caracteres acentuados.
+O pacote completo foi testado em jogo, incluindo os caracteres acentuados.
 
 1. Feche o jogo. Na Steam, abra **Gerenciar → Explorar arquivos locais**.
 2. Faça uma cópia de segurança de `Playable Archive_Data/resources.assets` e
@@ -123,7 +123,7 @@ tradução: confira a compatibilidade da nova Release antes de reinstalar.
 
 O levantamento inicial usa a edição **Steam para Windows, build 26137575**, com
 Unity 6000.0.72f1. A reconstrução dos dados foi verificada tecnicamente no Windows;
-a tradução completa e os glifos foram testados por Yuri durante a partida. Não há comprovação de compatibilidade com mods ou outras
+a tradução completa e os glifos foram testados em jogo. Não há comprovação de compatibilidade com mods ou outras
 edições. A tradução não exige alteração de executáveis.
 
 <details>
