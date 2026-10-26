@@ -151,7 +151,12 @@ def docs_status(project, published):
         if not any(a.get("name") == "PTBR.zip" and a.get("state") == "uploaded" for a in assets):
             raise Invalid("Docs reconciliation requires a confirmed published PTBR.zip")
         for rel in ["README.md", WORK+"README.md"]:
-            text = project.path(rel).read_text(encoding="utf-8")
+            try:
+                text = project.path(rel).read_text(encoding="utf-8")
+            except (OSError, UnicodeError):
+                warnings.append({"file": rel, "claim": "missing or unreadable documentation",
+                                 "action": "Restore and reconcile this document with the confirmed Release"})
+                continue
             if "<!-- release-state: unavailable -->" in text:
                 warnings.append({"file": rel, "claim": "release-state: unavailable",
                                  "action": f"Confirm {published['tag_name']}, update download/coverage text, then replace marker with release-state: available"})

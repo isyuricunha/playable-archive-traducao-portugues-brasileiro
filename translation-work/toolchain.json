@@ -22,7 +22,7 @@
     },
     "translation-work/release.py": {
       "mode": "git-lf",
-      "sha256": "3bb4d5df6ea6d3d373e6c874592d96c702c66d176fd774281e7267524247a567"
+      "sha256": "f89780697a1f4cd113872b32930a5335171c757fb03d6f6c2da1ee9f45c105de"
     },
     "translation-work/storage.py": {
       "mode": "git-lf",

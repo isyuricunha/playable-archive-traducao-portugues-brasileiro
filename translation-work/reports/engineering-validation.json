@@ -37,5 +37,23 @@
   "source_bytes": 21731896,
   "source_sha256": "67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766",
   "source_to_source_byte_identical": true,
-  "synthetic_unicode_reopened": true
+  "synthetic_unicode_reopened": true,
+  "windows_tests": {
+    "check": "passed",
+    "command": "python -B -m unittest discover -s translation-work/tests -v",
+    "doctor_local": "passed",
+    "git_diff_check": "passed",
+    "passed": 39,
+    "release_tests_rerun": 11,
+    "release_tests_rerun_passed": 11,
+    "seconds": 369.829,
+    "stress": {
+      "applies": 500,
+      "batches": 101,
+      "records": 1001,
+      "retained_bytes": 47459,
+      "retained_completed_snapshots": 10,
+      "unchanged_batch_bytes_and_mtimes_preserved": true
+    }
+  }
 }
