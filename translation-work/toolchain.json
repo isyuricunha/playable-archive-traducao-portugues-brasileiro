@@ -1,0 +1,41 @@
+{
+  "files": {
+    ".gitattributes": {
+      "mode": "git-lf",
+      "sha256": "5e20758fa1dff54b3e4775a59f67b51b460d13d48c2a10c33428df5d4a5b4967"
+    },
+    "translation-work/config.json": {
+      "mode": "git-lf",
+      "sha256": "02a46cf92cd7d1145e265e845e7cb83bc5d7053793563daf428fb426ed2d0e26"
+    },
+    "translation-work/consent.py": {
+      "mode": "git-lf",
+      "sha256": "973c23bea400c3f50c02bd94b714459c6fc2b1928e43dc7979142adec7994def"
+    },
+    "translation-work/engine-shapes.json": {
+      "mode": "git-lf",
+      "sha256": "7ce54909d0d216e42a7696feba9bce651b3c4ca26d5d15d89e70e5fa47b4bdb7"
+    },
+    "translation-work/native.py": {
+      "mode": "git-lf",
+      "sha256": "08518c5407ee4a93869305df1bc4c1e2da95e9ca4b1e89ba777c28ed13f19f5a"
+    },
+    "translation-work/release.py": {
+      "mode": "git-lf",
+      "sha256": "3bb4d5df6ea6d3d373e6c874592d96c702c66d176fd774281e7267524247a567"
+    },
+    "translation-work/storage.py": {
+      "mode": "git-lf",
+      "sha256": "9dce5b65f46f6b2a438e64b40eb29acd52093338f7def094c72d1008701168f0"
+    },
+    "translation-work/tests/fixtures/minimal.assets": {
+      "mode": "binary",
+      "sha256": "d269776a801590d7d0483c8caf5a7a016180071fe0030088dd598ea79db64c83"
+    },
+    "translation-work/toolkit.py": {
+      "mode": "git-lf",
+      "sha256": "fb4025cd3c3aa61e24587c80190c4d88955e27a8c444ba9ab0ac900c5dbe4169"
+    }
+  },
+  "schema": 1
+}

@@ -1,0 +1,41 @@
+{
+  "all_other_object_payloads_identical": true,
+  "game_executed": false,
+  "game_source_hash_unchanged": true,
+  "github_release_published": false,
+  "independent_changed_objects": [
+    256
+  ],
+  "independent_object_count": 2879,
+  "independent_reader": "UnityPy 1.25.4 (development only)",
+  "links_verified_http_200": [
+    "https://traducao.yuricunha.com/",
+    "https://github.com/isyuricunha/playable-archive-traducao-portugues-brasileiro",
+    "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5356470/3e3dd7a994a836e1d4402e10821822658e4fba76/header.jpg"
+  ],
+  "linux_arm64_executed": false,
+  "official_license_sha256": "e66c269d4819aaab34b49ef5220c4ddab6756f21bb5180761a4eb8561f2b7bbd",
+  "official_license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.txt",
+  "profile": {
+    "objects": 2879,
+    "platform": 19,
+    "tables": {
+      "CompendiumBase": 22,
+      "CompendiumTwo": 23,
+      "InGameUiText": 63,
+      "Letters": 8,
+      "MenuUiText": 12,
+      "Misc": 5,
+      "ObjectText": 42,
+      "ScriptCC": 1,
+      "ScriptJessica": 56,
+      "ScriptSet1": 244
+    },
+    "unity": "6000.0.72f1"
+  },
+  "real_PTBR_translated": 0,
+  "source_bytes": 21731896,
+  "source_sha256": "67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766",
+  "source_to_source_byte_identical": true,
+  "synthetic_unicode_reopened": true
+}

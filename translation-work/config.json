@@ -1,0 +1,7 @@
+{
+  "retention": {
+    "count": 10,
+    "budget": 536870912,
+    "headroom": 4194304
+  }
+}

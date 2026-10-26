@@ -1,0 +1,14 @@
+{
+  "game": "Playable Archive",
+  "steam_appid": 5356470,
+  "serialized_version": 22,
+  "unity_family": "6000",
+  "build_target": 19,
+  "deployment": "Playable Archive_Data/resources.assets",
+  "text_asset_class": 49,
+  "runtime_lookup": "Resources.LoadAll<TextAsset>(Text/)",
+  "csv_separator": ";",
+  "encoding": "UTF-8",
+  "replacement_column": "English",
+  "injection_tokens": ["%?", "%+"]
+}

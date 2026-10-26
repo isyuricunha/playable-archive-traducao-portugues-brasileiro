@@ -1,2 +1,13 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+* text=auto eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+LICENSE text eol=lf
+EN/** -text
+PTBR/** -text
+*.assets -text
+*.dll -text
+*.bin -text
+*.zip -text

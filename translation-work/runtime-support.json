@@ -1,0 +1,8 @@
+{
+  "arm64_live_verified": false,
+  "dependencies": [],
+  "expected_handoff": "Ubuntu 24.04 LTS ARM64",
+  "python": ">=3.10",
+  "schema": 1,
+  "toolchain_sha256": "1162fb35866a8514780bb77f60ec351e5e0a47cb27677b97e85b34b14d498be0"
+}

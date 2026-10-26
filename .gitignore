@@ -1,0 +1,6 @@
+translation-work/.state/
+translation-work/.dev-deps/
+translation-work/reports/local-*
+__pycache__/
+*.pyc
+PTBR.zip
