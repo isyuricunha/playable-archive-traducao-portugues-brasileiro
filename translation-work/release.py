@@ -16,7 +16,7 @@ import urllib.request
 
 from native import Invalid, DEPLOY
 from storage import json_bytes, read_json, sha
-from toolkit import Project, BUILD, WORK
+from toolkit import Project, BUILD, WORK, FONT_DEPLOY, FONT_LICENSE
 
 REPOSITORY = "isyuricunha/playable-archive-traducao-portugues-brasileiro"
 SEMVER = re.compile(r"v(\d+)\.(\d+)\.(\d+)$")
@@ -50,7 +50,7 @@ class Client:
         except urllib.error.HTTPError as e:
             return e.code, e.read(), dict(e.headers)
 
-    def request(self, method, endpoint="", data=None, missing=False, upload=False):
+    def request(self, method, endpoint="", data=None, missing=False, upload=False, content_type=None):
         if endpoint and not endpoint.startswith("/"):
             raise Invalid("API endpoint must be repository-relative")
         base = "https://uploads.github.com" if upload else "https://api.github.com"
@@ -64,7 +64,7 @@ class Client:
         if not self.token:
             del headers["Authorization"]
         if raw is not None:
-            headers["Content-Type"] = "application/zip" if upload else "application/json"
+            headers["Content-Type"] = content_type or ("application/zip" if upload else "application/json")
         for attempt in range(3):
             status, response, response_headers = self.transport(method, url, headers, raw)
             if status == 404 and missing:
@@ -135,11 +135,15 @@ def changelog(project, previous, current, receipt):
         if old_receipt.get("provenance") != receipt.get("provenance"):
             body += "A origem/versão da fonte mudou; confira a compatibilidade antes de instalar.\n\n"
         body += f"[Comparação de commits](https://github.com/{REPOSITORY}/compare/{previous}...{current}).\n\n"
-    body += ("Arquivo: **PTBR.zip**, com `Playable Archive_Data/resources.assets` na raiz. "
+    native_files = ", ".join(f"`{name}`" for name in sorted(receipt["outputs"]))
+    body += (f"Arquivo: **PTBR.zip**, com {native_files} na raiz. "
              "Faça backup do arquivo original e extraia o ZIP na pasta do jogo, mantendo o idioma inglês.\n\n"
              f"Fonte: Unity {receipt['profile']['unity']}; origem `{json.dumps(receipt['provenance'], ensure_ascii=False)}`. "
              "Validação técnica concluída; testes visuais e execução no jogo não são comprovados pelo build. "
              "Áudio e textos fora das tabelas não estão incluídos.\n\n")
+    if FONT_DEPLOY in receipt["outputs"]:
+        body += ("A fonte Courier Prime é distribuída sob SIL Open Font License 1.1; "
+                 "o texto completo acompanha a Release como **CourierPrime-OFL.txt**.\n\n")
     body += "<!-- ptbr-fingerprint: "+sha(json_bytes(receipt["outputs"]))+" -->"
     return body
 
@@ -193,13 +197,19 @@ def publish(project, client, commit):
         if not previous_sha or git(project.root, "merge-base", "--is-ancestor", previous_sha, commit, allow_failure=True).returncode:
             raise Invalid("NON_ANCESTOR_TAG: previous stable release must be an ancestor")
         prior = json.loads(git(project.root, "show", f"{previous_sha}:{BUILD}").stdout)
-        prior_bytes = git(project.root, "show", f"{previous_sha}:PTBR/{DEPLOY}").stdout
-        if prior.get("outputs") != {DEPLOY: sha(prior_bytes)}:
+        prior_outputs = prior.get("outputs", {})
+        if set(prior_outputs) not in ({DEPLOY}, {DEPLOY, FONT_DEPLOY}):
+            raise Invalid("Previous release has an unsupported native inventory")
+        prior_actual = {name: sha(git(project.root, "show", f"{previous_sha}:PTBR/{name}").stdout)
+                        for name in prior_outputs}
+        if prior_outputs != prior_actual:
             raise Invalid("Previous release manifest does not match tagged native files")
         if prior["outputs"] == receipt["outputs"]:
             confirmed = client.request("GET", f"/releases/{previous['id']}")
             if confirmed.get("draft") or not any(a.get("name") == "PTBR.zip" and a.get("state") == "uploaded" for a in confirmed.get("assets", [])):
                 raise Invalid("Published release lacks a confirmed PTBR.zip")
+            if FONT_DEPLOY in prior_outputs and not any(a.get("name") == "CourierPrime-OFL.txt" and a.get("state") == "uploaded" for a in confirmed.get("assets", [])):
+                raise Invalid("Published release lacks the Courier Prime license asset")
             return {"status": "unchanged", "tag": tag, "docs": docs_status(project, confirmed)}
         a, b, c = map(int, SEMVER.fullmatch(tag).groups())
         version = f"v{a}.{b}.{c+1}"
@@ -222,25 +232,32 @@ def publish(project, client, commit):
                     "name": "Playable Archive — PT-BR "+version, "body": body, "draft": True, "prerelease": False})
     archive = project.package()
     archive_bytes = Path(archive["zip"]).read_bytes()
+    payloads = {"PTBR.zip": archive_bytes}
+    if FONT_DEPLOY in receipt["outputs"]:
+        payloads["CourierPrime-OFL.txt"] = project.path(FONT_LICENSE).read_bytes()
     assets = client.request("GET", f"/releases/{release['id']}/assets?per_page=100")
-    matches = [a for a in assets if a["name"] == "PTBR.zip"]
-    if len(matches) > 1:
-        raise Invalid("Duplicate release ZIP assets")
-    if matches:
-        asset = matches[0]
-        if asset.get("state") != "uploaded" or asset.get("digest") != "sha256:"+sha(archive_bytes) or asset.get("size") != len(archive_bytes):
-            raise Invalid("Interrupted asset differs; inspect draft rather than silently replace")
-    else:
-        asset = client.request("POST", f"/releases/{release['id']}/assets?name=PTBR.zip", archive_bytes, upload=True)
-        if asset.get("state") != "uploaded" or asset.get("digest") != "sha256:"+sha(archive_bytes) or asset.get("size") != len(archive_bytes):
-            raise Invalid("Uploaded ZIP not confirmed")
+    for name, content in payloads.items():
+        matches = [a for a in assets if a["name"] == name]
+        if len(matches) > 1:
+            raise Invalid(f"Duplicate release assets: {name}")
+        if matches:
+            asset = matches[0]
+            if asset.get("state") != "uploaded" or asset.get("digest") != "sha256:"+sha(content) or asset.get("size") != len(content):
+                raise Invalid(f"Interrupted asset differs: {name}; inspect draft rather than silently replace")
+        else:
+            endpoint = f"/releases/{release['id']}/assets?name="+urllib.parse.quote(name, safe="")
+            asset = client.request("POST", endpoint, content, upload=True,
+                                   content_type="application/zip" if name.endswith(".zip") else "text/plain; charset=utf-8")
+            if asset.get("state") != "uploaded" or asset.get("digest") != "sha256:"+sha(content) or asset.get("size") != len(content):
+                raise Invalid(f"Uploaded asset not confirmed: {name}")
     current_head()
     client.request("PATCH", f"/releases/{release['id']}", {"draft": False, "body": body})
     published = client.request("GET", f"/releases/{release['id']}")
     if (published.get("draft") or published.get("tag_name") != version
             or client.tag_sha(version) != commit
-            or not any(a.get("name") == "PTBR.zip" and a.get("state") == "uploaded"
-                       and a.get("digest") == "sha256:"+sha(archive_bytes) for a in published.get("assets", []))):
+            or any(not any(a.get("name") == name and a.get("state") == "uploaded"
+                           and a.get("digest") == "sha256:"+sha(content) and a.get("size") == len(content)
+                           for a in published.get("assets", [])) for name, content in payloads.items())):
         raise Invalid("Post-publication asset/tag verification failed; rerun safely")
     return {"status": "published", "tag": version, "docs": docs_status(project, published)}
 

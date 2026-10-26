@@ -1,11 +1,11 @@
-# Playable Archive — guia técnico e passagem para a Ella
+# Playable Archive — guia técnico da tradução
 
 <!-- release-state: unavailable -->
 
-Estado inicial: **476 entradas, um lote de até 500, 0 traduções**. `PTBR/` ainda
-não existe; somente um build completo poderá criá-lo. Pesquisa e briefing já
-foram entregues por Sayuri. Ella decide terminologia e estilo, traduz e revisa.
-Yuri realiza a verificação visual do jogo quando houver um pacote autorizado.
+Estado atual: **tradução concluída e testada em jogo por Yuri**, incluindo os
+glifos. São 476 entradas em dois lotes de 250 e 226, sem campos pendentes.
+`PTBR/` e o build-manifest estão validados. O GitHub Actions gera o ZIP
+automaticamente para publicação na página de Releases.
 
 ## Começo no Ubuntu Server 24.04 LTS ARM64
 
@@ -19,12 +19,13 @@ Requer Python **3.10+** com biblioteca padrão; o Python 3.12 do Ubuntu 24.04 é
 adequado ao contrato. Não há pip, Mono, .NET, DLL, pacote nativo, serviço externo
 ou variável de busca de assemblies para configurar. O toolkit não instala nada.
 O doctor verifica SO/arquitetura, runtime, hashes canônicos, a fonte aceita e
-uma fixture Unity válida, inclusive reconstrução com caracteres acentuados.
+uma fixture Unity válida, inclusive reconstrução com caracteres acentuados, e
+reconstrói em memória a fonte do menu usando o recurso original aceito.
 Não altera traduções, fontes, relatórios, PTBR ou pacotes.
 
 **Resultado ao vivo no Ubuntu ARM64: pendente.** Os testes de engenharia são
 executados no Windows. O preflight local usa `doctor --local`, que não certifica
-ARM64. Se o preflight do servidor falhar, Ella deve parar antes da tradução e
+ARM64. Se o preflight do servidor falhar, a equipe deve parar antes da tradução e
 encaminhar o erro exato para correção no Windows. Não regenerar hashes para
 contornar uma falha nem instalar pacotes/usar SSH automaticamente.
 
@@ -37,22 +38,26 @@ Depois de passar:
 3. Execute `status`, `diff` e `resume`; traduza o JSONL em grupos que consiga
    revisar, aplicando apenas `PTBR` pelo mecanismo abaixo.
 4. Faça commits de progresso quando desejar, sem tocar em `PTBR/`. O toolkit
-   nunca faz commit ou push. A tradução não foi iniciada por esta preparação.
+   nunca faz commit ou push. A versão textual atual já está traduzida; em
+   atualizações, revise os itens que o sync adicionar ou invalidar.
 
 ## Organização e instalação nativa
 
 ```text
 EN/Playable Archive_Data/resources.assets    original binário preservado
+EN/Playable Archive_Data/sharedassets0.assets original da fonte do menu
 translation-work/translations/             manifest.json e batch-0001.jsonl
 translation-work/history/                  textos anteriores em atualizações
 translation-work/reports/                  último diff e validação técnica
 translation-work/.state/                   locks/backups locais ignorados
 PTBR/Playable Archive_Data/resources.assets somente depois de build completo
+PTBR/Playable Archive_Data/sharedassets0.assets fonte somente no build completo
 translation-work/build-manifest.json       recibo versionado do build
 ```
 
 O caminho relativo dentro de `PTBR/` é o caminho real abaixo da pasta do jogo.
-O ZIP contém `Playable Archive_Data/resources.assets`, sem pasta PTBR externa.
+O ZIP contém `Playable Archive_Data/resources.assets` e
+`Playable Archive_Data/sharedassets0.assets`, sem pasta PTBR externa.
 O jogo continua em inglês no seletor: a reconstrução substitui a coluna English.
 A instalação é manual, com backup, conforme o README público. Nenhuma operação
 da ferramenta escreve no diretório de instalação. Não execute a ferramenta
@@ -62,6 +67,10 @@ O binário possui outros objetos e referências a recursos da instalação.
 Eles são preservados; não é um pacote autônomo. A licença do projeto não concede
 permissões sobre esses recursos proprietários. Revise os direitos aplicáveis
 antes de distribuição pública. Nenhum recurso de mod é incluído.
+
+A fonte do menu usa Courier Prime Regular, sob [SIL OFL 1.1](vendor/courier-prime/OFL.txt).
+Yuri confirmou em jogo a tradução completa e os glifos. O build gera o
+recurso de fonte junto aos textos. Detalhes e restauração: [teste-da-fonte.md](docs/teste-da-fonte.md).
 
 ## Comandos na raiz do repositório
 
@@ -121,6 +130,15 @@ isso **não é prova criptográfica de ausência de mods**. Arquivos fornecidos
 explicitamente são registrados como originais fornecidos pelo usuário, sem
 alegar autenticação pelo fabricante. Não use instalações modificadas como EN.
 
+`sharedassets0.assets` também é uma dependência nativa do build e é preservado
+em `EN/`. O adaptador de fonte aceita somente o hash original verificado do
+build 26137575; um arquivo modificado ou atualização diferente bloqueia a
+importação do diretório do jogo até revisão do adaptador. `--source-root` também
+deve conter esse recurso original. `--source-file` usa a cópia aceita em EN;
+a compatibilidade desse arquivo isolado com o build continua dependendo da
+origem informada. A instalação de teste contém arquivos modificados, portanto
+restaure os backups antes de usá-la com `update-sources`.
+
 Não há varredura recursiva de discos: a descoberta consulta locais Steam
 limitados e seus manifests. Zero ou múltiplas instalações válidas exigem caminho
 explícito. Caminho externo validado fica apenas em `.state/local-install.json`.
@@ -131,7 +149,7 @@ somente seu PTBR e preservam o anterior em `history/`. Mover uma linha preserva
 a tradução e atualiza o localizador. Chave renomeada é remoção mais adição;
 sem reuso aproximado. Uma tabela desaparecida é tratada como fonte incompleta e
 bloqueia a atualização, até revisão explícita do adaptador. Um novo arquivo
-nativo não é importado silenciosamente: o contrato cobre apenas resources.assets;
+nativo não é importado silenciosamente: o contrato de textos cobre apenas resources.assets;
 novos TextAssets com o cabeçalho reconhecido nesse arquivo são descobertos.
 
 O catálogo completo de originais aceitos fica no manifesto versionado, e as
@@ -151,7 +169,7 @@ O payload é um JSON (não é o lote JSONL inteiro):
     {
       "id": "copiar id exato da entrada",
       "source_fingerprint": "copiar source_fingerprint da entrada",
-      "PTBR": "texto que a Ella traduziu e revisou"
+      "PTBR": "texto que a equipe de tradução traduziu e revisou"
     }
   ]
 }
@@ -223,7 +241,8 @@ de objetos não alterados, leitura independente por UnityPy de desenvolvimento,
 Unicode em fixture/recurso em memória, transações, aplicação, Git LF, packaging
 e mocks HTTP da publicação. Dependências de pesquisa em `.dev-deps/` são locais,
 ignoradas e desnecessárias para usar o toolkit. **Não verificados:** execução
-real ARM64, execução do jogo, renderização das fontes e execução real do Actions.
+real ARM64 e execução real do Actions. A tradução completa e os glifos foram
+testados no jogo por Yuri.
 
 ## Release automática
 
@@ -241,7 +260,9 @@ major/minor exige decisão explícita, fora da automação atual. Tags existente
 nunca são movidas. Drafts, pré-releases e tags soltas não determinam a versão
 estável anterior; conflitos são recusados.
 
-A publicação usa draft recuperável, upload com hash/size, publicação e nova
+A publicação inclui a licença da fonte como asset separado
+`CourierPrime-OFL.txt`; o ZIP contém apenas os arquivos nativos. Usa draft
+recuperável, upload com hash/size, publicação e nova
 consulta para confirmar tag e asset. Retry de GET transitório é limitado;
 erros de autenticação/permissão/404 não viram falsos sucessos. Um POST incerto
 deve ser repetido pelo workflow para reconciliação do draft, sem criar nova tag
@@ -271,7 +292,7 @@ os marcadores explícitos `release-state`, sem tentar adivinhar o sentido de
 prosa livre. Após publicação confirmada com PTBR.zip, o Actions também aponta
 avisos não fatais para documentos marcados como indisponíveis.
 
-Yuri/Ella deve confirmar tag/asset, contagem real e cobertura; atualizar os dois
+O mantenedor deve confirmar tag/asset, contagem real e cobertura; atualizar os dois
 READMEs, links de download, estado, versão e créditos; remover afirmações antigas
 de indisponibilidade/zero traduções; e trocar o marcador para
 `<!-- release-state: available -->`. Preserve as limitações de gameplay enquanto

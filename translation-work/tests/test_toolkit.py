@@ -18,18 +18,21 @@ import native
 import storage
 from native import Invalid, DEPLOY
 from storage import Store, canonical, digest, durable, json_bytes, sha
-from toolkit import Project, MANIFEST, BUILD, WORK, parse_source
+from toolkit import Project, MANIFEST, BUILD, WORK, FONT_DEPLOY, parse_source
 import consent
 import release
 
 SOURCE = Path(__file__).resolve().parents[2]
-CODE = ["native.py", "storage.py", "toolkit.py", "release.py", "consent.py"]
+CODE = ["native.py", "storage.py", "toolkit.py", "release.py", "consent.py", "font_patch.py"]
 
 
 def receipts(root):
     files = [WORK+v for v in CODE]+[WORK+"engine-shapes.json", ".gitattributes", WORK+"tests/fixtures/minimal.assets"]
-    spec = {"schema": 1, "files": {f: {"mode": "binary" if f.endswith(".assets") else "git-lf",
-            "sha256": sha((root/f).read_bytes() if f.endswith(".assets") else canonical((root/f).read_bytes()))} for f in files}}
+    for rel in [WORK+"config.json", WORK+"vendor/courier-prime/CourierPrime-Regular.ttf", WORK+"vendor/courier-prime/OFL.txt"]:
+        if (root/rel).exists():
+            files.append(rel)
+    spec = {"schema": 1, "files": {f: {"mode": "binary" if f.endswith((".assets", ".ttf")) else "git-lf",
+            "sha256": sha((root/f).read_bytes() if f.endswith((".assets", ".ttf")) else canonical((root/f).read_bytes()))} for f in files}}
     durable(root/(WORK+"toolchain.json"), json_bytes(spec))
     durable(root/(WORK+"runtime-support.json"), json_bytes({"schema": 1, "python": ">=3.10", "dependencies": [],
              "expected_handoff": "Ubuntu 24.04 LTS ARM64", "arm64_live_verified": False,
@@ -43,6 +46,19 @@ def setup_root(root):
     durable(root/(WORK+"tests/fixtures/minimal.assets"), native.fixture())
     for rel in ["README.md", WORK+"README.md"]:
         durable(root/rel, b"<!-- release-state: unavailable -->\nEm preparacao.\n")
+    receipts(root)
+
+
+def enable_font(root):
+    from font_patch import INPUT_SHA256
+    original = SOURCE/"EN"/FONT_DEPLOY
+    if not original.is_file() or digest(original) != INPUT_SHA256:
+        raise unittest.SkipTest("Verified original sharedassets0.assets is unavailable")
+    durable(root/("EN/"+FONT_DEPLOY), original.read_bytes())
+    for name in ["CourierPrime-Regular.ttf", "OFL.txt"]:
+        rel = WORK+"vendor/courier-prime/"+name
+        durable(root/rel, (SOURCE/rel).read_bytes())
+    durable(root/(WORK+"config.json"), json_bytes({"font_support": "courier-prime-v1"}))
     receipts(root)
 
 
@@ -241,6 +257,37 @@ class ProjectTests(unittest.TestCase):
             with self.assertRaisesRegex(Invalid, "INCOMPLETE"):
                 self.project.build()
         self.assertEqual((self.root/("PTBR/"+DEPLOY)).read_bytes(), original)
+
+    def test_complete_build_includes_tested_font_and_rejects_tampering(self):
+        self.init()
+        enable_font(self.root)
+        self.project = Project(self.root)
+        with self.assertRaisesRegex(Invalid, "INCOMPLETE"):
+            self.project.build()
+        self.assertFalse((self.root/"PTBR").exists())
+        self.complete()
+        receipt = self.project.verify_output()
+        self.assertEqual(set(receipt["outputs"]), {DEPLOY, FONT_DEPLOY})
+        from font_patch import INPUT_SHA256, OUTPUT_SHA256
+        self.assertEqual(receipt["font_dependency"]["source_sha256"], INPUT_SHA256)
+        self.assertEqual(receipt["outputs"][FONT_DEPLOY], OUTPUT_SHA256)
+        package = self.project.package()
+        with zipfile.ZipFile(package["zip"]) as z:
+            self.assertEqual(set(z.namelist()), {DEPLOY, FONT_DEPLOY})
+            self.assertTrue(all(not name.startswith("PTBR/") for name in z.namelist()))
+        font_output = self.root/("PTBR/"+FONT_DEPLOY)
+        original = font_output.read_bytes()
+        font_output.write_bytes(original[:-1]+bytes([original[-1] ^ 1]))
+        with self.assertRaisesRegex(Invalid, "INVALID_OUTPUT"):
+            self.project.verify_output()
+        font_output.write_bytes(original)
+        source = self.root/("EN/"+FONT_DEPLOY)
+        old = source.read_bytes()
+        source.write_bytes(old[:-1]+bytes([old[-1] ^ 1]))
+        with self.assertRaisesRegex(Invalid, "FONT_SOURCE_MISMATCH"):
+            self.project.verify_output()
+        source.write_bytes(old)
+        self.project.verify_output()
 
     def test_forged_complete_and_extra_output_rejected(self):
         self.init()

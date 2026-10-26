@@ -1,13 +1,13 @@
-# Fluxo da Ella
+# Fluxo da tradução manual
 
-O briefing já foi pesquisado e escrito. Depois do preflight ARM64, leia-o antes
-de definir o glossário. Trabalhe exclusivamente nos registros PTBR e nos seus
-documentos linguísticos. O toolkit não traduz nem aprova termos.
+O briefing já foi pesquisado e escrito. A tradução inicial foi concluída em dois lotes de 250 e 226. Em trabalhos futuros,
+leia o briefing e as decisões existentes antes de revisar termos. No servidor,
+execute o preflight ARM64 antes de começar. O toolkit não traduz nem aprova termos.
 
 1. `status` / `resume`: encontre a próxima entrada pendente e confira a geração.
 2. Leia trechos relacionados pelo prefixo de chave, tabela e contexto do briefing.
-3. Traduza e revise um grupo manejável. O lote de 500 é armazenamento, não
-   uma obrigação de traduzir 500 linhas numa etapa.
+3. Traduza e revise um grupo manejável. Neste projeto, os lotes armazenam até
+   250 entradas, conforme solicitado por Yuri.
 4. Prepare payload com ID, fingerprint e PTBR e aplique por `apply --payload`.
 5. Rode `check`, revise rejeições e faça commits de progresso quando apropriado.
    O comando não cria PTBR nem publica uma Release.

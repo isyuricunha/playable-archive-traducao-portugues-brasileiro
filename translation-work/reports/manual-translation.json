@@ -1,0 +1,172 @@
+{
+  "archive": {
+    "bytes": 39889726,
+    "duplicate_members": false,
+    "members_verified": true,
+    "path": "PTBR.zip",
+    "sha256": "7196ddef9a1437859198de9dd07d908e3f8e1ee4db5972290af1eba81486dec5"
+  },
+  "authorized_by": "Yuri",
+  "batch_size": 250,
+  "batches": [
+    {
+      "entries": 250,
+      "name": "batch-0001.jsonl"
+    },
+    {
+      "entries": 226,
+      "name": "batch-0002.jsonl"
+    }
+  ],
+  "date": "2026-10-26",
+  "font_menu_test": "Yuri confirmed Ccedilla and Otilde in previous menu test",
+  "full_gameplay_visual_review": "passed: confirmed by Yuri on 2026-10-26, including glyphs",
+  "github_release_published": false,
+  "immutable_source_validation": "passed",
+  "independent_native_readback": {
+    "changed_text_objects": [
+      251,
+      252,
+      254,
+      255,
+      256,
+      257,
+      258,
+      259,
+      262,
+      263
+    ],
+    "non_text_payloads_unchanged": true,
+    "reader": "UnityPy 1.25.4",
+    "source_objects": 2879,
+    "strings_match_JSONL": 476
+  },
+  "native_outputs": {
+    "Playable Archive_Data/resources.assets": "6b414cf48edf4543daba6de30f2139e16cb1e0a042d09134d9b48ac0d012c554",
+    "Playable Archive_Data/sharedassets0.assets": "71594688ce4820b79037bc51bee62f2bd079ffefd441f26456d56b409377f274"
+  },
+  "notes": "translation-work/docs/notas-de-revisao.md",
+  "numeric_puzzle_codes": "preserved",
+  "pending": 0,
+  "source_generation": "67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766",
+  "structural_validation": "passed",
+  "translated_and_reviewed": 476,
+  "unchanged_intentionally": [
+    {
+      "key": "CompBinding2NAME",
+      "table": "CompendiumTwo",
+      "value": "<b>VALEFOR</b>"
+    },
+    {
+      "key": "CompBinding3NAME",
+      "table": "CompendiumTwo",
+      "value": "<b>BARBATOS</b>"
+    },
+    {
+      "key": "CompBinding4NAME",
+      "table": "CompendiumTwo",
+      "value": "<b>BATHIN</b>"
+    },
+    {
+      "key": "CompBinding5NAME",
+      "table": "CompendiumTwo",
+      "value": "<b>AGARES</b>"
+    },
+    {
+      "key": "CompBinding6NAME",
+      "table": "CompendiumTwo",
+      "value": "<b>NABERIUS</b>"
+    },
+    {
+      "key": "CompBinding7NAME",
+      "table": "CompendiumTwo",
+      "value": "<b>DANTALION</b>"
+    },
+    {
+      "key": "Answer6A",
+      "table": "InGameUiText",
+      "value": "valefor"
+    },
+    {
+      "key": "Answer6B",
+      "table": "InGameUiText",
+      "value": "barbatos"
+    },
+    {
+      "key": "Answer6C",
+      "table": "InGameUiText",
+      "value": "bathin"
+    },
+    {
+      "key": "Answer6D",
+      "table": "InGameUiText",
+      "value": "agares"
+    },
+    {
+      "key": "Answer6E",
+      "table": "InGameUiText",
+      "value": "naberius"
+    },
+    {
+      "key": "Answer6F",
+      "table": "InGameUiText",
+      "value": "dantalion"
+    },
+    {
+      "key": "Speaker_Lamar",
+      "table": "InGameUiText",
+      "value": "[Lamar]"
+    },
+    {
+      "key": "Speaker_Jessica",
+      "table": "InGameUiText",
+      "value": "[Jessica]"
+    },
+    {
+      "key": "Speaker_Daniel",
+      "table": "InGameUiText",
+      "value": "[Daniel]"
+    },
+    {
+      "key": "Speaker_Dresden",
+      "table": "InGameUiText",
+      "value": "[Dresden]"
+    },
+    {
+      "key": "Speaker_Henry",
+      "table": "InGameUiText",
+      "value": "[Henry]"
+    },
+    {
+      "key": "uiVsync",
+      "table": "MenuUiText",
+      "value": "VSync"
+    },
+    {
+      "key": "S1_s4b_Jessica_003",
+      "table": "ScriptJessica",
+      "value": "Daniel."
+    },
+    {
+      "key": "s1DanielCallMuffled",
+      "table": "ScriptSet1",
+      "value": "Daniel."
+    },
+    {
+      "key": "s1DanielCallMuffled2",
+      "table": "ScriptSet1",
+      "value": "Daniel."
+    },
+    {
+      "key": "LamarCall2",
+      "table": "ScriptSet1",
+      "value": "Lamar."
+    },
+    {
+      "key": "CallForJess",
+      "table": "ScriptSet1",
+      "value": "Jess!"
+    }
+  ],
+  "package_generation": "automatic GitHub Actions workflow"
+}

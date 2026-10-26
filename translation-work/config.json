@@ -1,4 +1,5 @@
 {
+  "font_support": "courier-prime-v1",
   "retention": {
     "count": 10,
     "budget": 536870912,

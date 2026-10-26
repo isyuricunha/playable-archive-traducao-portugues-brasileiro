@@ -1,9 +1,11 @@
-# Playable Archive — briefing de contexto para a Ella
+# Playable Archive — briefing de contexto para a equipe de tradução
 
-Pesquisa e preparação técnica: Sayuri Mizuki, em 26/10/2026. Este briefing já
-foi pesquisado e escrito como parte da engenharia do toolkit. Cabe à Ella
-consultá-lo, confrontá-lo com os contextos e manter as decisões linguísticas
-no glossário e nas diretrizes. Nenhuma equivalência PT-BR abaixo está aprovada.
+Pesquisa e preparação técnica realizadas em 26/10/2026. Este briefing já
+foi pesquisado e escrito como parte da engenharia do toolkit. Cabe à equipe de tradução
+consultá-lo e confrontá-lo com os contextos. Este documento registra a pesquisa
+anterior à tradução. A localização foi concluída em lotes de 250 e 226. As decisões atuais estão no
+glossário, nas diretrizes e nas notas de revisão, que prevalecem sobre exemplos
+terminológicos apresentados aqui como questões em aberto.
 
 ## Identidade e limites da pesquisa
 
@@ -67,7 +69,7 @@ ocultistas [3: ObjectText/JessicaId; ScriptJessica].
 
 **Lamar Robbins / Robins** tem identificação de detetive e narração investigativa.
 O roteiro usa Robbins em `vo_Lamar_IntroRecorder_0`, mas o cartão `LamarSheet`
-traz Robins. A inconsistência já existe na fonte; Ella deve registrá-la como
+traz Robins. A inconsistência já existe na fonte; a equipe deve registrá-la como
 dúvida, sem alterar IDs ou presumir uma grafia definitiva. O registro técnico
 de observações convive com reações de medo e linguagem informal. Não uniformize
 o tom de uma descrição pericial e de uma exclamação de pânico.
@@ -118,7 +120,7 @@ fala que a explica, sem transformar palavras próximas em sinônimos automático
 `CompendiumTwo` menciona Rehoboam, Solomon e Abijam numa moldura de transmissão
 de conhecimento, com um trecho apresentado como tradução de escrita hebraica
 para latim. O registro documental pode ser arcaizante, mas a forma final em
-PT-BR pertence às decisões da Ella. Não substitua a ficção por uma interpretação
+PT-BR pertence às decisões da equipe de tradução. Não substitua a ficção por uma interpretação
 religiosa própria nem alegue que esses documentos reproduzem uma fonte histórica.
 
 Valefor, Barbatos, Bathin, Agares, Naberius e Dantalion aparecem tanto como nomes
@@ -197,4 +199,4 @@ novas sem preencher lacunas com suposições.
    `TextObjectUpdater`. O assembly não é redistribuído no repositório.
 
 As afirmações sobre personagens e documentos provêm dos textos originais locais.
-As observações sobre como eles funcionam em cena permanecem pendentes de teste.
+Yuri confirmou o teste da tradução completa e dos glifos no jogo em 26/10/2026.

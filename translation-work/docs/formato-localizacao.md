@@ -21,9 +21,10 @@ Esses valores são o snapshot inicial, não requisitos eternos para updates.
 | ScriptJessica | 56 |
 | ScriptSet1 | 244 |
 
-O contêiner possui 2.879 objetos. Somente os dez TextAssets de localização são
+O contêiner possui 2.879 objetos. Os dez TextAssets de localização são
 interpretados para reconstrução; os demais payloads, IDs, hashes de tipo,
-referências externas e metadados permanecem opacos. Não há criptografia ou
+referências externas e metadados permanecem opacos. Além dele, o build gerencia
+`Playable Archive_Data/sharedassets0.assets` para a fonte do menu. Não há criptografia ou
 compressão envolvendo esse arquivo específico.
 
 ## SerializedFile
@@ -93,6 +94,17 @@ de fonte e inventário de lotes. Os lotes mantêm sua atribuição durante updat
 o build usa a localização do snapshot atual, não a ordem dos lotes.
 O histórico versionado guarda registros completos modificados/removidos.
 
+## Fonte do menu
+
+`sharedassets0.assets`, SHA-256 original
+`e0a57c03f72d20ebf4f763b466393a894bfe80ef31f547effc2a7a2444827ad7`, contém
+1.073 objetos. O `courier_bold SDF` é dinâmico e aponta para o objeto `Font`
+133, cujos bytes são substituídos pela Courier Prime Regular sob SIL OFL 1.1.
+O build verifica o hash do recurso, os bytes e a cobertura Unicode da fonte,
+reconstrói o contêiner e exige hash de saída igual ao testado no menu por Yuri.
+Os outros 1.072 objetos foram comparados com UnityPy e permanecem idênticos.
+Leia [teste-da-fonte.md](teste-da-fonte.md) para os limites e restauração.
+
 ## Validação e limites
 
 Proteção de `%?`, `%+`, placeholders posicionais e tags por multiplicidade;
@@ -102,6 +114,5 @@ automática oculta. Controles, semicolons e newlines físicas são recusados em 
 
 O pacote atual cobre as tabelas. Não cobre strings literais como `New Game`
 em código, campos de texto serializados em cenas, nem imagens com texto. Não
-edita DLLs, fontes ou cenas. Adicionar esses formatos exigirá outra investigação
-e um adaptador com identidade e reconstrução comprovadas. Não há teste visual
-de glifos, layout, sincronização de legendas ou cobertura em runtime.
+edita DLLs nem cenas. Além das tabelas, o build altera apenas a fonte do menu
+citada acima. Outros formatos exigem investigação e adaptador comprovado. Yuri confirmou a tradução completa e os glifos durante o teste no jogo.

@@ -1,0 +1,63 @@
+{
+  "font": {
+    "changed_object": 133,
+    "license": "SIL OFL 1.1",
+    "name": "Courier Prime Regular",
+    "objects_preserved": 1072,
+    "output_asset_sha256": "71594688ce4820b79037bc51bee62f2bd079ffefd441f26456d56b409377f274",
+    "source_asset_sha256": "e0a57c03f72d20ebf4f763b466393a894bfe80ef31f547effc2a7a2444827ad7",
+    "ttf_sha256": "72f793376f8e2841656bf21d77a5de010f2929bd6956a22ee848ad0c7eb978af"
+  },
+  "game": "Playable Archive",
+  "menu_runtime_validation": {
+    "confirmed_by": "Yuri",
+    "confirmed_characters": [
+      "U+00C7",
+      "U+00D5"
+    ],
+    "date": "2026-10-26",
+    "evidence": "user supplied in-game screenshot showing VER ARQUIVO / OPÃ‡Ã•ES / SAIR",
+    "scope": "main menu only"
+  },
+  "other_font_findings": {
+    "electronic_highway_context": [
+      "CamLabel",
+      "Monitoring",
+      "FilterLabel"
+    ],
+    "full_game_font_coverage_verified": true,
+    "needs_gameplay_review": [],
+    "offline_correct_examples": [
+      "Roboto-Bold",
+      "HandWrittenEnglish",
+      "HandWriteEurope",
+      "NothingYouCouldDo-Regular",
+      "CourierPrime-Regular",
+      "Type",
+      "ComputerPixel"
+    ]
+  },
+  "production_integration": {
+    "build_outputs": [
+      "Playable Archive_Data/resources.assets",
+      "Playable Archive_Data/sharedassets0.assets"
+    ],
+    "completed_translations": 476,
+    "production_output_created": true,
+    "release_license_asset": "CourierPrime-OFL.txt"
+  },
+  "steam_build": "26137575",
+  "verification": {
+    "includes_mocked_multi_asset_release_resume": true,
+    "previous_storage_stress": "500 applies / 101 batches passed during initial toolkit creation",
+    "relevant_tests_passed": 44,
+    "seconds": 32.456,
+    "storage_stress_rerun": false
+  },
+  "full_gameplay_validation": {
+    "confirmed_by": "Yuri",
+    "date": "2026-10-26",
+    "result": "passed, including glyphs",
+    "method": "user report"
+  }
+}

@@ -22,6 +22,8 @@ MANIFEST = WORK+"translations/manifest.json"
 BUILD = WORK+"build-manifest.json"
 REPORT = WORK+"reports/sync-latest.json"
 SCHEMA = 1
+FONT_DEPLOY = "Playable Archive_Data/sharedassets0.assets"
+FONT_LICENSE = WORK+"vendor/courier-prime/OFL.txt"
 
 
 def lines_bytes(rows):
@@ -49,6 +51,22 @@ class Project:
     def path(self, rel):
         return safe(self.root, rel)
 
+    def font_dependency(self):
+        mode = self.config.get("font_support")
+        if mode is None:
+            return None
+        if mode != "courier-prime-v1":
+            raise Invalid("UNSUPPORTED_FONT_PROFILE: review the configured font adapter")
+        import font_patch
+        return {"deployment": FONT_DEPLOY, "source_sha256": font_patch.INPUT_SHA256,
+                "font_sha256": font_patch.NEW_FONT_SHA256, "output_sha256": font_patch.OUTPUT_SHA256}
+
+    def check_font_source(self):
+        dependency = self.font_dependency()
+        if dependency and digest(self.path("EN/"+FONT_DEPLOY)) != dependency["source_sha256"]:
+            raise Invalid("FONT_SOURCE_MISMATCH: restore the verified original sharedassets0.assets under EN; do not import a modified game file")
+        return dependency
+
     def integrity(self):
         runtime = read_json(self.path(WORK+"runtime-support.json"))
         toolchain = self.path(WORK+"toolchain.json")
@@ -67,7 +85,7 @@ class Project:
             raise Invalid("MISSING_RUNTIME: Python >= 3.10 required")
         return runtime
 
-    def load(self, deep=False):
+    def load(self, deep=False, check_font=True):
         self.store.clean_state()
         manifest = read_json(self.path(MANIFEST))
         if manifest.get("schema") != SCHEMA or manifest.get("deployment") != DEPLOY:
@@ -113,6 +131,8 @@ class Project:
             rows, info = parse_source(self.path(source_rel).read_bytes())
             if rows != catalog or info != manifest["profile"]:
                 raise Invalid("Native source mapping differs from accepted catalog")
+            if check_font and self.check_font_source():
+                expected["EN/"+FONT_DEPLOY] = digest(self.path("EN/"+FONT_DEPLOY))
         return manifest, records, membership, expected
 
     def translation_hash(self, manifest):
@@ -132,15 +152,20 @@ class Project:
                 output = "verified"
             except (Invalid, OSError, KeyError, ValueError):
                 output = "stale-or-invalid"
-        return {"game": "Playable Archive", "generation": manifest["generation"],
+        result = {"game": "Playable Archive", "generation": manifest["generation"],
                 "entries": len(rows), "completed": complete, "pending": len(rows)-complete,
                 "batches": len(manifest["batches"]), "PTBR": output,
                 "source_changed": digest(self.path("EN/"+DEPLOY)) != manifest["source_sha256"],
                 "next": next((r["id"] for r in rows if not r["PTBR"]), None),
                 "storage": self.store.stats()}
+        dependency = self.font_dependency()
+        if dependency:
+            result["font_source_changed"] = digest(self.path("EN/"+FONT_DEPLOY)) != dependency["source_sha256"]
+        return result
 
     def sync(self, data, *, initial=False, dry=False, batch_size=500, provenance=None):
         self.integrity()
+        dependency = self.check_font_source()
         candidate, profile = parse_source(data)
         expected = {}
         previous, oldrows, members = None, [], {}
@@ -156,6 +181,8 @@ class Project:
                 raise Invalid("TRANSLATED_SOURCE: candidate is a known PTBR build")
         elif not initial:
             initial = True
+        if dependency:
+            expected["EN/"+FONT_DEPLOY] = dependency["source_sha256"]
         if not 1 <= batch_size <= 500:
             raise Invalid("Batch size must be between 1 and 500")
         old = {r["id"]: r for r in oldrows}
@@ -164,7 +191,7 @@ class Project:
                   "modified": [DEPLOY] if previous and sha(data) != previous["source_sha256"] else [], "removed": []},
                   "counts": dict.fromkeys(["added", "modified", "removed", "moved", "unchanged", "preserved_translations"], 0),
                   "changes": [], "affected_batches": [], "validation": "passed",
-                  "warnings": [], "next": "Ella: inspect changes and translate only pending entries; build only when complete."}
+                  "warnings": [], "next": "Review changes and translate only pending entries; build only when complete."}
         batches = {b: [] for b in previous["batches"]} if previous else {"batch-0001.jsonl": []}
         history = []
         for row in candidate:
@@ -248,7 +275,7 @@ class Project:
 
     def apply(self, payload, replace=False, partial=False):
         self.integrity()
-        manifest, rows, members, expected = self.load(deep=True)
+        manifest, rows, members, expected = self.load(deep=True, check_font=False)
         if payload.get("generation") != manifest["generation"]:
             raise Invalid("WRONG_GENERATION: payload must match accepted source generation")
         updates = payload.get("updates")
@@ -286,18 +313,26 @@ class Project:
         if any(not r["PTBR"].strip() for r in rows):
             raise Invalid("INCOMPLETE: all entries must have reviewed PTBR before build; previous PTBR preserved")
         output = native.build(self.path("EN/"+DEPLOY).read_bytes(), rows)
+        outputs = {DEPLOY: output}
+        dependency = self.check_font_source()
+        if dependency:
+            import font_patch
+            outputs[FONT_DEPLOY] = font_patch.patch(self.path("EN/"+FONT_DEPLOY).read_bytes(),
+                                                    self.path(WORK+"vendor/courier-prime/CourierPrime-Regular.ttf").read_bytes())
         receipt = {"schema": SCHEMA, "complete": True, "entries": len(rows), "completed": len(rows),
                    "generation": manifest["generation"], "source_sha256": manifest["source_sha256"],
                    "translations_sha256": self.translation_hash(manifest),
                    "manifest_sha256": sha(canonical(self.path(MANIFEST).read_bytes())),
                    "profile": manifest["profile"], "provenance": manifest["provenance"],
                    "toolchain_sha256": sha(canonical(self.path(WORK+"toolchain.json").read_bytes())),
-                   "outputs": {DEPLOY: sha(output)}, "in_game_verified": False}
-        changes = {"PTBR/"+DEPLOY: output, BUILD: json_bytes(receipt)}
+                   "outputs": {name: sha(data) for name, data in outputs.items()},
+                   "font_dependency": dependency, "in_game_verified": False}
+        changes = {"PTBR/"+name: data for name, data in outputs.items()}
+        changes[BUILD] = json_bytes(receipt)
         # Unexpected output members cannot be silently removed by a build.
         if self.path("PTBR").exists():
             files = self.inventory("PTBR")
-            if set(files)-{DEPLOY}:
+            if set(files)-set(outputs):
                 raise Invalid("Unexpected PTBR files; inspect before building")
         for rel in changes:
             expected[rel] = digest(self.path(rel))
@@ -323,6 +358,8 @@ class Project:
         self.integrity()
         manifest, rows, _, _ = self.load()
         receipt = read_json(self.path(BUILD))
+        dependency = self.check_font_source()
+        expected_outputs = {DEPLOY, FONT_DEPLOY} if dependency else {DEPLOY}
         if (receipt.get("schema") != SCHEMA or receipt.get("complete") is not True
                 or not rows or any(not r["PTBR"].strip() for r in rows)
                 or receipt.get("entries") != len(rows) or receipt.get("completed") != len(rows)
@@ -334,7 +371,9 @@ class Project:
                 or receipt.get("toolchain_sha256") != sha(canonical(self.path(WORK+"toolchain.json").read_bytes()))
                 or receipt.get("profile") != manifest["profile"]
                 or receipt.get("provenance") != manifest["provenance"]
-                or set(receipt.get("outputs", {})) != {DEPLOY}
+                or receipt.get("font_dependency") != dependency
+                or (dependency is not None and receipt.get("outputs", {}).get(FONT_DEPLOY) != dependency["output_sha256"])
+                or set(receipt.get("outputs", {})) != expected_outputs
                 or self.inventory("PTBR") != receipt["outputs"]):
             raise Invalid("INVALID_OUTPUT: incomplete, stale, tampered or inconsistent build")
         return receipt
@@ -380,6 +419,12 @@ class Project:
                 raise Invalid("Fixture Unicode rebuild failed")
             if self.path(MANIFEST).exists():
                 self.load(deep=True)
+            dependency = self.check_font_source()
+            if dependency:
+                import font_patch
+                font_data = self.path(WORK+"vendor/courier-prime/CourierPrime-Regular.ttf").read_bytes()
+                font_patch.sfnt_has_characters(font_data, font_patch.REQUIRED_CHARS)
+                font_patch.patch(self.path("EN/"+FONT_DEPLOY).read_bytes(), font_data)
         except (ValueError, KeyError, OSError) as e:
             raise Invalid(f"MALFORMED_TEST_DATA: {e}")
         return {"doctor": "passed", "system": platform.system(), "architecture": platform.machine(),
@@ -397,6 +442,9 @@ def validate_game(project, root):
         raise Invalid("WRONG_GAME: app.info differs")
     data = safe(root, DEPLOY).read_bytes()
     parse_source(data)
+    dependency = project.font_dependency()
+    if dependency and digest(safe(root, FONT_DEPLOY)) != dependency["source_sha256"]:
+        raise Invalid("FONT_SOURCE_MISMATCH: installed font resource is modified or unsupported; use verified originals")
     provenance = {"kind": "identified-installation", "identity": "DarkStone Digital / Playable Archive"}
     steam = root.parent.parent/"appmanifest_5356470.acf"
     if steam.exists():
@@ -497,6 +545,9 @@ def main(argv=None):
                         game, data, provenance = discover_game(project)
                 elif args.source_file or args.source_root:
                     data = (Path(args.source_file) if args.source_file else safe(Path(args.source_root), DEPLOY)).read_bytes()
+                    dependency = project.font_dependency()
+                    if args.source_root and dependency and digest(safe(Path(args.source_root), FONT_DEPLOY)) != dependency["source_sha256"]:
+                        raise Invalid("FONT_SOURCE_MISMATCH: source tree does not contain the verified original font resource")
                     provenance = {"kind": "supplied-original", "verification": "user supplied; official pristine bytes not independently provable"}
                 elif command == "diff" and project.path(REPORT).exists():
                     result = read_json(project.path(REPORT))

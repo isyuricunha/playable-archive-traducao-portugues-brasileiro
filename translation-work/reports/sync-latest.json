@@ -12390,7 +12390,7 @@
   },
   "existing_pending": 0,
   "generation": "67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766",
-  "next": "Ella: inspect changes and translate only pending entries; build only when complete.",
+  "next": "Review changes and translate only pending entries; build only when complete.",
   "pending": 476,
   "previous_generation": null,
   "resources": {

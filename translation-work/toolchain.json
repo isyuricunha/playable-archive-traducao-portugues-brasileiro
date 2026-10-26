@@ -6,7 +6,7 @@
     },
     "translation-work/config.json": {
       "mode": "git-lf",
-      "sha256": "02a46cf92cd7d1145e265e845e7cb83bc5d7053793563daf428fb426ed2d0e26"
+      "sha256": "71b3019fa2a5d1e0710b04cfe0654c274e545ded872cbcd879915a4289553efe"
     },
     "translation-work/consent.py": {
       "mode": "git-lf",
@@ -16,13 +16,17 @@
       "mode": "git-lf",
       "sha256": "7ce54909d0d216e42a7696feba9bce651b3c4ca26d5d15d89e70e5fa47b4bdb7"
     },
+    "translation-work/font_patch.py": {
+      "mode": "git-lf",
+      "sha256": "2500aad926f4af11c758548c4dedf29089ef9a5531abdda8fa2c42a30d1d8ae0"
+    },
     "translation-work/native.py": {
       "mode": "git-lf",
       "sha256": "08518c5407ee4a93869305df1bc4c1e2da95e9ca4b1e89ba777c28ed13f19f5a"
     },
     "translation-work/release.py": {
       "mode": "git-lf",
-      "sha256": "f89780697a1f4cd113872b32930a5335171c757fb03d6f6c2da1ee9f45c105de"
+      "sha256": "c022c8aa3d13439b15cfc38790cb4455d66e8a6bd95fc8e28fd5ae07dce4f374"
     },
     "translation-work/storage.py": {
       "mode": "git-lf",
@@ -34,7 +38,19 @@
     },
     "translation-work/toolkit.py": {
       "mode": "git-lf",
-      "sha256": "fb4025cd3c3aa61e24587c80190c4d88955e27a8c444ba9ab0ac900c5dbe4169"
+      "sha256": "9b91bc3faa0504b6658a4080e752f3dd8dde0b870e84673548e772ddfb2ca0be"
+    },
+    "translation-work/vendor/courier-prime/.gitattributes": {
+      "mode": "git-lf",
+      "sha256": "2d0298df1eefdd92dd324c8fb52ebf016155a0d5514d9d686c0d979bd0a7a6f9"
+    },
+    "translation-work/vendor/courier-prime/CourierPrime-Regular.ttf": {
+      "mode": "binary",
+      "sha256": "72f793376f8e2841656bf21d77a5de010f2929bd6956a22ee848ad0c7eb978af"
+    },
+    "translation-work/vendor/courier-prime/OFL.txt": {
+      "mode": "git-lf",
+      "sha256": "9a755af092b494944c99f471be6fddd19b006a448fefdc4717e4ee0aa09a97b0"
     }
   },
   "schema": 1

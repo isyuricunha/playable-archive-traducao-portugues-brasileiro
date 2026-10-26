@@ -11,9 +11,9 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from native import Invalid, DEPLOY, fixture
 from storage import durable, sha
-from toolkit import Project, WORK
+from toolkit import Project, WORK, FONT_DEPLOY
 import release
-from test_toolkit import setup_root, payload
+from test_toolkit import setup_root, payload, enable_font
 
 
 class GitHubMock:
@@ -24,6 +24,7 @@ class GitHubMock:
         self.tags = {}
         self.calls = []
         self.fail_upload = False
+        self.fail_upload_name = None
         self.statuses = []
 
     def transport(self, method, url, headers, raw):
@@ -65,10 +66,11 @@ class GitHubMock:
                     result = r["assets"]
                 else:
                     assert parsed.netloc == "uploads.github.com"
-                    assert parsed.query == "name=PTBR.zip"
-                    if self.fail_upload:
+                    asset_name = urllib.parse.parse_qs(parsed.query)["name"][0]
+                    assert asset_name in {"PTBR.zip", "CourierPrime-OFL.txt"}
+                    if self.fail_upload or self.fail_upload_name == asset_name:
                         return 403, b'{}', {}
-                    result = {"name": "PTBR.zip", "id": 100+rid, "state": "uploaded",
+                    result = {"name": asset_name, "id": 100+rid+len(r["assets"]), "state": "uploaded",
                               "digest": "sha256:"+sha(raw), "size": len(raw)}
                     r["assets"].append(result)
             elif method == "PATCH":
@@ -181,6 +183,27 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(len(self.server.releases[0]["assets"]), 1)
         self.publish()
         self.assertEqual(len(self.server.releases[0]["assets"]), 1)
+
+    def test_font_release_includes_separate_license_and_resumes_partial_upload(self):
+        enable_font(self.root)
+        self.project = Project(self.root)
+        with self.project.store.lock():
+            self.project.build()
+        self.commit()
+        self.server.head = self.head()
+        self.server.fail_upload_name = "CourierPrime-OFL.txt"
+        with self.assertRaisesRegex(Invalid, "GITHUB_HTTP_403"):
+            self.publish()
+        self.assertEqual([a["name"] for a in self.server.releases[0]["assets"]], ["PTBR.zip"])
+        self.server.fail_upload_name = None
+        result = self.publish()
+        self.assertEqual(result["tag"], "v1.0.0")
+        assets = self.server.releases[0]["assets"]
+        self.assertEqual({a["name"] for a in assets}, {"PTBR.zip", "CourierPrime-OFL.txt"})
+        self.assertIn(FONT_DEPLOY, self.server.releases[0]["body"])
+        self.assertIn("SIL Open Font License", self.server.releases[0]["body"])
+        self.assertEqual(self.publish()["status"], "unchanged")
+        self.assertEqual(len(self.server.releases), 1)
 
     def test_stale_commit_and_invalid_existing_tag_fail_closed(self):
         self.server.head = "f"*40

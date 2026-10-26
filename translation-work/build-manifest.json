@@ -1,0 +1,51 @@
+{
+  "complete": true,
+  "completed": 476,
+  "entries": 476,
+  "font_dependency": {
+    "deployment": "Playable Archive_Data/sharedassets0.assets",
+    "font_sha256": "72f793376f8e2841656bf21d77a5de010f2929bd6956a22ee848ad0c7eb978af",
+    "output_sha256": "71594688ce4820b79037bc51bee62f2bd079ffefd441f26456d56b409377f274",
+    "source_sha256": "e0a57c03f72d20ebf4f763b466393a894bfe80ef31f547effc2a7a2444827ad7"
+  },
+  "generation": "67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766",
+  "in_game_validation": {
+    "confirmed_by": "Yuri",
+    "date": "2026-10-26",
+    "evidence": "user report; exact tested output hashes match native_outputs in reports/manual-translation.json",
+    "scope": "complete translation and glyphs"
+  },
+  "in_game_verified": true,
+  "manifest_sha256": "94e4f6b99eaf198c65361bebbbe0f0f8ba61701d21958927d1237a593b8768dd",
+  "outputs": {
+    "Playable Archive_Data/resources.assets": "6b414cf48edf4543daba6de30f2139e16cb1e0a042d09134d9b48ac0d012c554",
+    "Playable Archive_Data/sharedassets0.assets": "71594688ce4820b79037bc51bee62f2bd079ffefd441f26456d56b409377f274"
+  },
+  "profile": {
+    "objects": 2879,
+    "platform": 19,
+    "tables": {
+      "CompendiumBase": 22,
+      "CompendiumTwo": 23,
+      "InGameUiText": 63,
+      "Letters": 8,
+      "MenuUiText": 12,
+      "Misc": 5,
+      "ObjectText": 42,
+      "ScriptCC": 1,
+      "ScriptJessica": 56,
+      "ScriptSet1": 244
+    },
+    "unity": "6000.0.72f1"
+  },
+  "provenance": {
+    "appid": 5356470,
+    "buildid": "26137575",
+    "identity": "DarkStone Digital / Playable Archive",
+    "kind": "steam-metadata"
+  },
+  "schema": 1,
+  "source_sha256": "67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766",
+  "toolchain_sha256": "d7cab62464e255322617641e6f00276c8c850bc2b407fa5528614cafb229f73d",
+  "translations_sha256": "a961c45be92d1d6c1524c4f41d63a6f49be2fe48777f4779e5dee5599038a936"
+}
