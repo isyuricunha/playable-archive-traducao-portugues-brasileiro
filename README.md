@@ -9,6 +9,7 @@
 <p>
   <a href="https://store.steampowered.com/app/5356470/Playable_Archive/">🎮 Steam</a> ·
   <a href="https://github.com/isyuricunha/playable-archive-traducao-portugues-brasileiro/releases">📦 Releases</a> ·
+  <a href="https://www.nexusmods.com/playablearchive/mods/1">🧩 Nexus Mods</a> ·
   <a href="https://traducao.yuricunha.com/">🌐 Portal de traduções</a>
 </p>
 </div>
@@ -52,7 +53,8 @@ salvamento, para jogar em uma sessão. A tradução não altera esse funcionamen
 Consulte a [página de Releases](https://github.com/isyuricunha/playable-archive-traducao-portugues-brasileiro/releases)
 para baixar **PTBR.zip** da versão compatível com sua instalação. O pacote é
 montado automaticamente pelo GitHub Actions a partir dos arquivos da tradução,
-com histórico de alterações e instruções em cada Release.
+com histórico de alterações e instruções em cada Release. O mesmo pacote está
+publicado no [Nexus Mods](https://www.nexusmods.com/playablearchive/mods/1).
 
 **Importante:** os downloads “Source code” disponibilizados pelo GitHub não são
 pacotes de instalação. Se ainda não houver uma Release com **PTBR.zip**, o
