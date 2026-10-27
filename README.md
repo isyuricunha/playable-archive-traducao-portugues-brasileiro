@@ -13,11 +13,9 @@
 </p>
 </div>
 
-<!-- release-state: unavailable -->
-
-> **Tradução concluída e testada em jogo**, incluindo textos e glifos.
-> São 476 entradas em dez tabelas. O ZIP é gerado automaticamente pelo
-> GitHub Actions; a disponibilidade pública acompanha a página de Releases.
+> **Tradução para PT-BR concluída, com textos e glifos testados em jogo.**
+> O pacote de instalação é publicado automaticamente pelo GitHub Actions
+> na [página de Releases](https://github.com/isyuricunha/playable-archive-traducao-portugues-brasileiro/releases).
 
 ## 🕯️ Sobre a tradução
 
@@ -27,10 +25,9 @@ leva ao português brasileiro os textos das tabelas de localização
 identificadas no jogo, mantendo o ritmo das conversas, o peso dos documentos e
 a clareza das instruções.
 
-A base é o inglês original. A proposta inclui legendas e textos de leitura,
-sem substituir as vozes. O escopo conhecido reúne **476 entradas em dez tabelas**,
-com cerca de **5.400 palavras em inglês**. A tradução e os glifos foram
-validados durante o teste no jogo.
+A base é o inglês original. A tradução abrange falas, legendas, interface,
+interações, descrições de objetos, cartas e outros textos de leitura, sem
+substituir a dublagem ou o áudio. Os textos e glifos foram validados em jogo.
 
 ## 📼 Um arquivo que não deveria ser aberto
 
@@ -50,34 +47,18 @@ A [descrição oficial na Steam](https://store.steampowered.com/app/5356470/Play
 informa uma experiência de aproximadamente 30–60 minutos, sem sistema de
 salvamento, para jogar em uma sessão. A tradução não altera esse funcionamento.
 
-## ✦ O que está no escopo?
-
-| Conteúdo identificado | Entradas | Situação |
-| --- | ---: | --- |
-| Falas e indicações sonoras das tabelas de roteiro | 301 | Traduzido |
-| Interface, interação e tutoriais | 75 | Traduzido |
-| Descrições de objetos | 42 | Traduzido |
-| Cartas e documentos pessoais | 8 | Traduzido |
-| Compêndios | 45 | Traduzido |
-| Poemas e outros textos | 5 | Traduzido |
-| **Total gerenciado** | **476** | **476 traduzidas** |
-
-**Fora deste pacote:** dublagem e áudio, imagens com texto e mensagens fora
-dessas tabelas. A presença de uma entrada nos arquivos não garante que ela seja
-usada na versão atual. O projeto não inclui expansões ou variantes de mods.
-
 ## 📦 Downloads e versões
 
-Acompanhe a [página de Releases](https://github.com/isyuricunha/playable-archive-traducao-portugues-brasileiro/releases).
-O pacote **PTBR.zip** já foi gerado e validado localmente. A primeira publicação
-pública será **v1.0.0**; ela ainda não foi disponibilizada. Atualizações posteriores
-receberão versões como v1.0.1 e v1.0.2, com um changelog do que efetivamente mudou.
+Consulte a [página de Releases](https://github.com/isyuricunha/playable-archive-traducao-portugues-brasileiro/releases)
+para baixar **PTBR.zip** da versão compatível com sua instalação. O pacote é
+montado automaticamente pelo GitHub Actions a partir dos arquivos da tradução,
+com histórico de alterações e instruções em cada Release.
 
-Enquanto não houver uma Release com esse arquivo, acompanhe o estado deste
-projeto pela página acima. O download de “Source code” do GitHub não é o pacote de instalação.
-Uma validação técnica também não substitui a revisão visual dentro do jogo.
+**Importante:** os downloads “Source code” disponibilizados pelo GitHub não são
+pacotes de instalação. Se ainda não houver uma Release com **PTBR.zip**, o
+download da tradução não está disponível nessa página.
 
-## 🛠️ Como instalar quando o pacote estiver disponível
+## 🛠️ Como instalar
 
 O pacote completo foi testado em jogo, incluindo os caracteres acentuados.
 
@@ -90,7 +71,7 @@ O pacote completo foi testado em jogo, incluindo os caracteres acentuados.
 5. Mantenha o idioma do jogo em **inglês**: o pacote substituirá os textos dessa
    coluna pelo PT-BR. Confira menus, legendas, documentos e caracteres acentuados.
 
-O caminho dentro do ZIP será:
+O conteúdo do ZIP segue esta estrutura:
 
 ```text
 Playable Archive_Data/
@@ -196,9 +177,9 @@ contribuição estão em [CONTRIBUTING.md](CONTRIBUTING.md).
 - **Jogo original:** DarkStone Digital; publicação: DreadXP.
 - **Fonte do menu:** Courier Prime, de Alan Dague-Greene e Courier Prime Project
   Authors, sob [SIL Open Font License 1.1](translation-work/vendor/courier-prime/OFL.txt).
-- **Localização PT-BR:** preparada neste projeto sob a coordenação de Yuri Cunha.
-  A tradução foi concluída e testada em jogo por Yuri; novos colaboradores serão
-  creditados conforme as contribuições efetivamente realizadas e autorizadas.
+- **Localização PT-BR:** tradução concluída e testada em jogo.
+  Novos colaboradores serão creditados conforme as contribuições efetivamente
+  realizadas e autorizadas.
 
 Este é um projeto independente de tradução de fãs, sem vínculo oficial anunciado.
 

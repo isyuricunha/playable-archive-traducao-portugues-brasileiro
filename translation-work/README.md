@@ -1,7 +1,5 @@
 # Playable Archive — guia técnico da tradução
 
-<!-- release-state: unavailable -->
-
 Estado atual: **tradução concluída e testada em jogo por Yuri**, incluindo os
 glifos. São 476 entradas em dois lotes de 250 e 226, sem campos pendentes.
 `PTBR/` e o build-manifest estão validados. O GitHub Actions gera o ZIP
@@ -240,9 +238,9 @@ Verificado no Windows: parsing/reconstrução, no-op binário idêntico, preserv
 de objetos não alterados, leitura independente por UnityPy de desenvolvimento,
 Unicode em fixture/recurso em memória, transações, aplicação, Git LF, packaging
 e mocks HTTP da publicação. Dependências de pesquisa em `.dev-deps/` são locais,
-ignoradas e desnecessárias para usar o toolkit. **Não verificados:** execução
-real ARM64 e execução real do Actions. A tradução completa e os glifos foram
-testados no jogo por Yuri.
+ignoradas e desnecessárias para usar o toolkit. A execução local da suíte não demonstra funcionamento no ARM64 nem publicação
+real pelo Actions; esses resultados devem ser conferidos nos respectivos
+ambientes. A tradução completa e os glifos foram testados em jogo.
 
 ## Release automática
 
@@ -273,13 +271,19 @@ exigem inspeção do draft, sem substituição silenciosa.
 O changelog compara IDs e EN/PTBR versionados e lista recursos nativos alterados,
 origem e versão, sem inventar correções ou teste de gameplay. O ZIP permanece na
 Release, não apenas num artifact transitório. Somente `contents: write` e o token
-do próprio Actions são usados. **Nenhum push, Release ou workflow remoto foi
-disparado na preparação.** Os testes executam o cliente HTTP real com transport
-simulado, incluindo endpoints, upload, retomada e confirmação.
+do próprio Actions são usados. Os testes locais executam o cliente HTTP de
+publicação com transporte simulado, incluindo endpoints, upload, retomada e
+confirmação. Publicações reais devem ser verificadas na página de Releases
+ou no histórico do GitHub Actions; testes locais não comprovam seu resultado.
 
-### Reconciliação dos READMEs após uma Release real
+### README público com conteúdo permanente
 
-Depois da primeira publicação, ou quando quiser conferir novamente:
+O README público apresenta a tradução, instruções de instalação e um link estável
+para a página de Releases. Evite “ainda não publicada”, versões futuras fixas
+e contagens por tabela, que ficam obsoletas. Mantenha o inventário detalhado
+neste guia técnico e nos manifestos; a Release contém o changelog da versão.
+
+Para conferir a publicação real quando necessário:
 
 ```bash
 python -B translation-work/toolkit.py docs-status
@@ -292,13 +296,11 @@ os marcadores explícitos `release-state`, sem tentar adivinhar o sentido de
 prosa livre. Após publicação confirmada com PTBR.zip, o Actions também aponta
 avisos não fatais para documentos marcados como indisponíveis.
 
-O mantenedor deve confirmar tag/asset, contagem real e cobertura; atualizar os dois
-READMEs, links de download, estado, versão e créditos; remover afirmações antigas
-de indisponibilidade/zero traduções; e trocar o marcador para
-`<!-- release-state: available -->`. Preserve as limitações de gameplay enquanto
-não houver teste real. Depois da revisão, rode novamente `docs-status`.
-O checker nunca edita arquivos ou abre commits/PRs, e um aviso documental nunca
-desfaz uma publicação bem-sucedida. Commits só de README não geram outra versão.
+Se o texto público não afirma um estado de publicação fixo nem contém marcador
+de indisponibilidade, não exige atualização após cada Release. Ajuste-o apenas
+quando mudarem fatos relevantes, como instalação, escopo ou compatibilidade.
+A checagem não edita arquivos, não abre commits/PRs e não invalida uma publicação
+bem-sucedida. Commits só de README não geram outra versão.
 
 ## Licença e contribuições
 
