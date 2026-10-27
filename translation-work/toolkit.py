@@ -443,8 +443,14 @@ def validate_game(project, root):
     data = safe(root, DEPLOY).read_bytes()
     parse_source(data)
     dependency = project.font_dependency()
-    if dependency and digest(safe(root, FONT_DEPLOY)) != dependency["source_sha256"]:
-        raise Invalid("FONT_SOURCE_MISMATCH: installed font resource is modified or unsupported; use verified originals")
+    if dependency:
+        installed_font = digest(safe(root, FONT_DEPLOY))
+        if installed_font not in {dependency["source_sha256"], dependency["output_sha256"]}:
+            raise Invalid("FONT_SOURCE_MISMATCH: installed font resource is modified or unsupported; use verified originals")
+        # Steam can update resources.assets while retaining our exact font patch.
+        # Keep using the verified English font resource under EN, never import
+        # the localized installed font as an original.
+        project.check_font_source()
     provenance = {"kind": "identified-installation", "identity": "DarkStone Digital / Playable Archive"}
     steam = root.parent.parent/"appmanifest_5356470.acf"
     if steam.exists():

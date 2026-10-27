@@ -1,0 +1,49 @@
+{
+  "automated_tests": {
+    "passed": 44,
+    "run": 45,
+    "seconds": 36.432,
+    "skipped": 1,
+    "stress_test_rerun": false
+  },
+  "automated_validation": "passed",
+  "date": "2026-10-27",
+  "english_text_changes": 0,
+  "entries": 476,
+  "in_game_validation": {
+    "confirmed_by": "Yuri",
+    "date": "2026-10-27",
+    "evidence": "Confirmação do mantenedor e captura com VER ARQUIVO, OPÇÕES e SAIR",
+    "scope": "Menu em PT-BR e glifos confirmados em jogo"
+  },
+  "in_game_verified": true,
+  "independent_reader": "UnityPy",
+  "independent_strings_verified": 476,
+  "installed": true,
+  "installed_hashes_match_build": true,
+  "menu": {
+    "paramountIntro": "Os produtores agradecem às famílias de Daniel e Jessica Stewart por permitirem o desenvolvimento de um jogo baseado nestes acontecimentos, e ao Departamento de Polícia de Rochester por fornecer o material original à desenvolvedora.",
+    "uiApply": "APLICAR",
+    "uiCancel": "CANCELAR",
+    "uiContinue": "CONTINUAR",
+    "uiLoading": "CARREGANDO",
+    "uiOptions": "OPÇÕES",
+    "uiQuit": "SAIR",
+    "uiReset": "REDEFINIR",
+    "uiResume": "RETOMAR",
+    "uiStart": "VER ARQUIVO",
+    "uiSub": "Legendas descritivas",
+    "uiVsync": "VSync"
+  },
+  "moved_entries": 103,
+  "note": "Atualização validada em jogo pelo mantenedor. ZIP gerado automaticamente pelo GitHub Actions.",
+  "outputs": {
+    "Playable Archive_Data/resources.assets": "848d535add94d7a37bc297362b9fc198f16326d023105f246d906367ea108403",
+    "Playable Archive_Data/sharedassets0.assets": "71594688ce4820b79037bc51bee62f2bd079ffefd441f26456d56b409377f274"
+  },
+  "preserved_translations": 476,
+  "previous_build": "26137575",
+  "source_sha256": "99e18b6b4e063ccc5f36a3a4c94902ebc3e680f79976221a6358e76cb15cb20e",
+  "steam_build": "26246817",
+  "unchanged_non_text_objects": 2869
+}

@@ -4,5 +4,5 @@
   "expected_handoff": "Ubuntu 24.04 LTS ARM64",
   "python": ">=3.10",
   "schema": 1,
-  "toolchain_sha256": "d7cab62464e255322617641e6f00276c8c850bc2b407fa5528614cafb229f73d"
+  "toolchain_sha256": "eed8e61c521e79087034d9931ebf735595382d53ded1735e4f2dcc94a8902d15"
 }

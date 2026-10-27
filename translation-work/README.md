@@ -5,6 +5,11 @@ glifos. São 476 entradas em dois lotes de 250 e 226, sem campos pendentes.
 `PTBR/` e o build-manifest estão validados. O GitHub Actions gera o ZIP
 automaticamente para publicação na página de Releases.
 
+Atualização de 27/10/2026: pacote reconstruído para o build Steam **26246817**.
+As 476 traduções foram preservadas; 103 entradas mudaram de posição.
+Validação estrutural e leitura independente aprovadas. Atualização confirmada
+em jogo pelo mantenedor em 27/10/2026, com menu em PT-BR e glifos corretos.
+
 ## Começo no Ubuntu Server 24.04 LTS ARM64
 
 Após o clone/pull habitual, na raiz do repositório, execute **um preflight**:
@@ -130,8 +135,9 @@ alegar autenticação pelo fabricante. Não use instalações modificadas como E
 
 `sharedassets0.assets` também é uma dependência nativa do build e é preservado
 em `EN/`. O adaptador de fonte aceita somente o hash original verificado do
-build 26137575; um arquivo modificado ou atualização diferente bloqueia a
-importação do diretório do jogo até revisão do adaptador. `--source-root` também
+build 26137575; um arquivo desconhecido bloqueia a importação até revisão do adaptador.
+O hash exato da fonte corrigida também é aceito na instalação, sem importá-la
+como original: o build continua usando a fonte original verificada em `EN/`. `--source-root` também
 deve conter esse recurso original. `--source-file` usa a cópia aceita em EN;
 a compatibilidade desse arquivo isolado com o build continua dependendo da
 origem informada. A instalação de teste contém arquivos modificados, portanto

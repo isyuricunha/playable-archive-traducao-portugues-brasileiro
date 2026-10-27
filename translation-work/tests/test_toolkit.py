@@ -341,6 +341,27 @@ class ProjectTests(unittest.TestCase):
         file.write_bytes(blob)
         self.project.integrity()
 
+    def test_update_with_retained_known_font_patch(self):
+        from toolkit import validate_game
+        dependency = {"source_sha256": sha(b"original font"), "output_sha256": sha(b"patched font")}
+        durable(self.root/("EN/"+FONT_DEPLOY), b"original font")
+        with tempfile.TemporaryDirectory(prefix="Updated game ") as t:
+            game = Path(t)
+            durable(game/"Playable Archive_Data/app.info", b"DarkStone Digital\nPlayable Archive\n")
+            durable(game/DEPLOY, native.fixture())
+            durable(game/FONT_DEPLOY, b"patched font")
+            with patch.object(self.project, "font_dependency", return_value=dependency):
+                data, _ = validate_game(self.project, game)
+                self.assertEqual(data, native.fixture())
+                self.assertEqual((self.root/("EN/"+FONT_DEPLOY)).read_bytes(), b"original font")
+                durable(game/FONT_DEPLOY, b"unknown font")
+                with self.assertRaisesRegex(Invalid, "FONT_SOURCE_MISMATCH"):
+                    validate_game(self.project, game)
+                durable(game/FONT_DEPLOY, b"patched font")
+                durable(self.root/("EN/"+FONT_DEPLOY), b"corrupted original")
+                with self.assertRaisesRegex(Invalid, "FONT_SOURCE_MISMATCH"):
+                    validate_game(self.project, game)
+
     def test_install_validation_and_explicit_provenance(self):
         with tempfile.TemporaryDirectory(prefix="Game with spaces ") as t:
             game = Path(t)

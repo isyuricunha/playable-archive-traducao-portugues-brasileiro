@@ -1,12 +1,12 @@
 # Sincronização de fontes
 
-Geração: `67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766`
+Geração: `99e18b6b4e063ccc5f36a3a4c94902ebc3e680f79976221a6358e76cb15cb20e`
 
-- added: 476
+- added: 0
 - modified: 0
 - removed: 0
-- moved: 0
-- unchanged: 0
-- preserved_translations: 0
+- moved: 103
+- unchanged: 373
+- preserved_translations: 476
 
 Consulte sync-latest.json para IDs, textos anteriores e PT-BR histórico.

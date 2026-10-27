@@ -8,11 +8,17 @@
     "output_sha256": "71594688ce4820b79037bc51bee62f2bd079ffefd441f26456d56b409377f274",
     "source_sha256": "e0a57c03f72d20ebf4f763b466393a894bfe80ef31f547effc2a7a2444827ad7"
   },
-  "generation": "67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766",
-  "in_game_verified": false,
-  "manifest_sha256": "94e4f6b99eaf198c65361bebbbe0f0f8ba61701d21958927d1237a593b8768dd",
+  "generation": "99e18b6b4e063ccc5f36a3a4c94902ebc3e680f79976221a6358e76cb15cb20e",
+  "in_game_validation": {
+    "confirmed_by": "Yuri",
+    "date": "2026-10-27",
+    "evidence": "Confirmação do mantenedor e captura com VER ARQUIVO, OPÇÕES e SAIR",
+    "scope": "Menu em PT-BR e glifos confirmados em jogo"
+  },
+  "in_game_verified": true,
+  "manifest_sha256": "c6de996f67fb1f84b0c211ae4010d92ed6e785772c0ac7ab1a64cf92ada21178",
   "outputs": {
-    "Playable Archive_Data/resources.assets": "53062381e5b558e7fdb6776bb20978af5cce5453e296e14157951d01e9df6814",
+    "Playable Archive_Data/resources.assets": "848d535add94d7a37bc297362b9fc198f16326d023105f246d906367ea108403",
     "Playable Archive_Data/sharedassets0.assets": "71594688ce4820b79037bc51bee62f2bd079ffefd441f26456d56b409377f274"
   },
   "profile": {
@@ -34,12 +40,12 @@
   },
   "provenance": {
     "appid": 5356470,
-    "buildid": "26137575",
+    "buildid": "26246817",
     "identity": "DarkStone Digital / Playable Archive",
     "kind": "steam-metadata"
   },
   "schema": 1,
-  "source_sha256": "67096199754073b6a3e6007df745c737559ea9327efbb6872c2a15376bae5766",
-  "toolchain_sha256": "d7cab62464e255322617641e6f00276c8c850bc2b407fa5528614cafb229f73d",
-  "translations_sha256": "854453f4a32144884c50821c1d842abd14a64ff003ef2872a27cedae1c286b92"
+  "source_sha256": "99e18b6b4e063ccc5f36a3a4c94902ebc3e680f79976221a6358e76cb15cb20e",
+  "toolchain_sha256": "eed8e61c521e79087034d9931ebf735595382d53ded1735e4f2dcc94a8902d15",
+  "translations_sha256": "cdd5458ed6a68ea73cd0dd37a4ef9ea7055fe9c8ddf7add158c8790a48ca451e"
 }
